@@ -1,0 +1,90 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+@layer base {
+  :root {
+    --font-serif: "Cinzel", Georgia, serif;
+    --font-editorial: "Cormorant Garamond", Georgia, serif;
+    --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #0c0d12;
+    color: #ded9cd;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .font-monument {
+    font-family: var(--font-serif);
+    letter-spacing: 0.02em;
+  }
+
+  .font-prose-serif {
+    font-family: var(--font-editorial);
+  }
+}
+
+/* Animated trade route dashes */
+@keyframes dash-pulse {
+  to {
+    stroke-dashoffset: -40;
+  }
+}
+
+.leaflet-trade-route {
+  stroke-dasharray: 6 8;
+  animation: dash-pulse 2s linear infinite;
+}
+
+/* Custom dark gold Leaflet popup styling */
+.leaflet-popup-content-wrapper {
+  background: #10131d !important;
+  color: #e5e2da !important;
+  border: 1px solid rgba(197, 160, 89, 0.45) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+  padding: 0 !important;
+}
+
+.leaflet-popup-tip {
+  background: #10131d !important;
+  border: 1px solid rgba(197, 160, 89, 0.45) !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  line-height: 1.5 !important;
+}
+
+/* Custom subtle scrollbars for archival feel */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f1118;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2e3f;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #c5a059;
+}
+
+/* Gold foil hairline glow */
+.gold-hairline {
+  border: 1px solid rgba(197, 160, 89, 0.22);
+}
+
+.gold-hairline:hover {
+  border-color: rgba(197, 160, 89, 0.45);
+}
+
+.gold-glow-subtle {
+  box-shadow: 0 0 25px -5px rgba(197, 160, 89, 0.08);
+}

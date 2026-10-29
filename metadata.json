@@ -1,0 +1,6 @@
+{
+  "name": "The Evolutionary Web of Civilization",
+  "description": "An interactive digital museum exploring the 12 structural characteristics, monumental achievements, and transformations of world civilizations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
