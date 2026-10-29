@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { RAW_CIVILIZATIONS } from './data/civilizationsData';
 import { ViewMode } from './types/civilization';
 import { Header } from './components/Header';
@@ -25,6 +25,14 @@ export default function App() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [compareCivIds, setCompareCivIds] = useState<string[]>(['sumer', 'classical_rome']);
   const [isFullscreenTimelineOpen, setIsFullscreenTimelineOpen] = useState<boolean>(false);
+
+  // Ensure switching between different tabs always loads the clicked tab scrolled to the top
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.querySelectorAll('.overflow-y-auto').forEach((el) => {
+      el.scrollTop = 0;
+    });
+  }, [currentView, activeCivilizationId]);
 
   const activeCiv =
     RAW_CIVILIZATIONS.find((c) => c.id === activeCivilizationId) ||
