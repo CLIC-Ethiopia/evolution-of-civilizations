@@ -4,6 +4,7 @@
  */
 
 import { Civilization } from '../types/civilization';
+import { CIVILIZATION_GALLERIES } from './civilizationGalleries';
 
 export const RAW_CIVILIZATIONS: Civilization[] = [
   {
@@ -687,3 +688,17 @@ export const RAW_CIVILIZATIONS: Civilization[] = [
     }
   }
 ];
+
+// Attach curated 6-8 authentic Wikimedia Commons archival plate galleries to each civilization
+// and synchronize primary and fallback images across all views in the app
+RAW_CIVILIZATIONS.forEach((civ) => {
+  const gallery = CIVILIZATION_GALLERIES[civ.id];
+  if (gallery && gallery.length > 0) {
+    civ.gallery = gallery;
+    civ.primaryImage = gallery[0].primarySrc;
+    civ.fallbackImage = gallery[0].fallbackSrc;
+    civ.imageCaption = gallery[0].caption;
+    civ.imageCredit = gallery[0].credit;
+  }
+});
+

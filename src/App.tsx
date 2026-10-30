@@ -18,6 +18,7 @@ import { GeographicOriginMap } from './components/MuseumWings/GeographicOriginMa
 import { LegacyLineageTree } from './components/MuseumWings/LegacyLineageTree';
 import { ArtifactGallery } from './components/MuseumWings/ArtifactGallery';
 import { PrintableDossier } from './components/MuseumWings/PrintableDossier';
+import { EvolutionEngine } from './components/Evolution/EvolutionEngine';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<ViewMode>('landing');
@@ -71,6 +72,7 @@ export default function App() {
             civilizations={RAW_CIVILIZATIONS}
             onSelectCivilization={handleSelectCivilization}
             onNavigateView={(view) => setCurrentView(view)}
+            onOpenCompare={handleOpenCompare}
           />
         )}
 
@@ -102,6 +104,14 @@ export default function App() {
             onSelectCivilization={(id) => setActiveCivilizationId(id)}
             onNavigateToArchive={handleNavigateToArchive}
             onOpenFullscreen={() => setIsFullscreenTimelineOpen(true)}
+          />
+        )}
+
+        {currentView === 'evolution' && (
+          <EvolutionEngine
+            civilizations={RAW_CIVILIZATIONS}
+            onSelectCivilization={handleNavigateToArchive}
+            onOpenCompare={handleOpenCompare}
           />
         )}
 

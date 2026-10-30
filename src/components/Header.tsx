@@ -31,6 +31,7 @@ export const Header: React.FC<HeaderProps> = ({
     { view: 'landing', label: 'Overview' },
     { view: 'archive', label: 'Archive' },
     { view: 'timeline', label: 'Dual Timeline' },
+    { view: 'evolution', label: 'Evolution' },
     { view: 'compare', label: 'Compare Eras' },
     { view: 'macro_matrix', label: 'Macro Matrix' },
   ];

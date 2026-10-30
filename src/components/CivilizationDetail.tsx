@@ -17,7 +17,7 @@ import {
 import { Civilization, CharacteristicKey } from '../types/civilization';
 import { CHARACTERISTICS_META } from '../constants/characteristics';
 import { CharacteristicIcon } from './CharacteristicIcon';
-import { ArchivalImage } from './ArchivalImage';
+import { CivGalleryShowcase } from './CivGalleryShowcase';
 import { CharacteristicModal } from './CharacteristicModal';
 import { soundManager } from '../utils/audioAmbience';
 
@@ -117,16 +117,11 @@ export const CivilizationDetail: React.FC<CivilizationDetailProps> = ({
           </div>
         </div>
 
-        {/* Right Column: Archival Image with Lightbox */}
+        {/* Right Column: Curated Archival Gallery with Horizontal Library */}
         <div className="lg:col-span-5">
-          <ArchivalImage
-            primarySrc={civilization.primaryImage}
-            fallbackSrc={civilization.fallbackImage}
-            alt={civilization.name}
-            caption={civilization.imageCaption}
-            credit={civilization.imageCredit}
-            aspectRatioClass="aspect-4/3"
-            className="w-full shadow-xl"
+          <CivGalleryShowcase
+            civilization={civilization}
+            className="w-full"
           />
         </div>
       </section>

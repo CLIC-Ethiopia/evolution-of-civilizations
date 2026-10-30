@@ -1,132 +1,125 @@
-# OpenStreetMap Integration, 5 New Civilizations & Card Legibility Expansion
+# Implementation Plan: Obsidian-Style Civilization Interaction Graph & TLDR Hub
 
-A comprehensive architectural blueprint to upgrade the digital museum with free, interactive OpenStreetMap cartography, animated territorial extents and trade routes, expanded civilizational archives (adding Greece, Norse/Vikings, Mongols, Ottomans, and British Empire), and universal typographic legibility improvements.
+## Title & Summary
+Implement an interactive, Obsidian-style **Civilization Interaction Graph** directly on the landing overview page as the default experience. This feature untangles complex historical data into an intuitive, visual force-directed network showing civilizational inheritances, achievements, and transmission pathways with filtering controls and quick-glance TLDR dossiers.
 
 ---
 
 ## User Review & Critical Decisions
 
 > [!IMPORTANT]
-> The following architectural decisions have been synthesized directly from your selections:
->
-> 1. **Map Cartography Engine**: Leaflet with standard OpenStreetMap colorful tiles and political borders, loaded seamlessly in the client without external API key barriers.
-> 2. **Territorial Extent & Animated Trade Networks**:
->    - Interactive territorial boundary polygons showing maximum imperial reach.
->    - Animated dashed bezier trade corridors indicating major commercial partners (e.g., Silk Road, Viking river trade, Mediterranean fleets, Trans-Saharan gold routes).
->    - Rich interactive popups on marker click displaying civilization summary, era, capital, biome, and an action button to jump to the archive.
-> 3. **Expanded Civilizations Suite (12 -> 17 Civilizations)**:
->    - **Classical Greece** (Athenian democracy, philosophy, monumental architecture, Hellenic trade).
->    - **Norse / Viking Age** (Clinker longships, Thing democratic assemblies, North Atlantic diaspora).
->    - **Mongol Empire** (Genghis Khan, Pax Mongolica, Yam postal relay, Eurasian unification).
->    - **Ottoman Empire** (Sublime Porte, gunpowder cannons, Silk-Spice crossroads, millet autonomy).
->    - **British Empire** (Industrial mechanization, Royal Navy supremacy, global maritime logistics).
-> 4. **Typographic Hierarchy & Readability Upgrade**:
->    - Increase base font sizes from cramped `text-[10px]` and `text-xs` up to `text-sm` (14px) and `text-base` (16px) for body descriptions.
->    - Relax line heights (`leading-relaxed` / 1.6–1.7) and raise text contrast against dark backgrounds.
+> **Key Architecture Decisions for Review:**
+> 1. **Default Landing Experience**: The app will load directly into the **Civilization Graph** view by default inside the Overview page (with the primary action button prominently in front of "Interactive Timeline", "Multi-Era Radar Compare", and "Exhibition Archive").
+> 2. **Rendering Engine (SVG + D3-Force)**: For 17 civilizations and ~25–35 interaction vectors, an SVG-based force simulation (`d3-force` mathematics with React rendering) provides 60 FPS performance while offering crisp typography, glow filters, responsive pan/zoom, and accessible pointer interactions without Canvas pixelation on high-DPI displays.
+> 3. **Obsidian Visual Style**: Dark obsidian backdrop (`#0a0b10`), glowing colored nodes (grouped by continent or era), animated directional pulses along interaction edges, and neighborhood spotlighting (hovering dims unrelated nodes to 10% opacity).
 
 ---
 
 ## 1. Overview & Core Concept
 
-- **The Vision**: Transform the Geographic Cradles view from a stylized diagram into a living, interactive historical GIS atlas backed by real OpenStreetMap geography. Simultaneously enrich the historical corpus to 17 world civilizations spanning four millennia and enhance typographic comfort across the entire interface.
-- **Key Value**: Users can visually observe how civilizations expanded across continents, who they traded with, where their capital cities stood in modern geography, and read complex analytical narratives without eye fatigue.
+### What It Does
+The **Civilization Graph** is an interactive, spatial knowledge graph that maps human history as an interconnected web of civilization nodes and exchange vectors. Instead of reading through long walls of text, users can immediately see:
+- Who influenced whom (incoming roots vs. outgoing legacies).
+- The complete list of historical achievements per civilization.
+- Core breakthroughs extracted from the evolutionary analysis (science, metallurgy, law, hydraulics).
+- Dynamic inclusion/exclusion checkboxes to compare specific regional or temporal networks.
+
+### Target Audience & Persona
+Users seeking a **TLDR ("Too Long; Didn't Read")** executive summary of world history. It transforms the feeling of a "dense Wikipedia" into an engaging, explorable mental model.
+
+### Key Value
+Immediate clarity: within 5 seconds of opening the application, the user grasps the connected nature of human history and can click any node to pull up a curated 30-second digest.
 
 ---
 
 ## 2. User Experience & Visual Design
 
-### A. OpenStreetMap Interactive GIS Canvas
-- **Map Viewport**: Responsive 16:9 / 2:1 container powered by Leaflet using official OpenStreetMap tile servers (`https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`).
-- **Civilization Pins & Popups**:
-  - Distinctive antique gold and terra-cotta markers with custom historical icons.
-  - Clicking any pin displays a rich popup containing:
-    - Civilization Name, Era Bounds, and Capital City
-    - Territorial Reach summary (square km and modern countries occupied)
-    - Key Trade Partners list
-    - Direct "Inspect Civilization Profile" action button
-- **Animated Territorial Reach Overlay**:
-  - When a civilization is active, a translucent territorial polygon/boundary illuminates its historical borders (e.g., Mongol Empire across China, Central Asia, and Russia; Roman Empire ringing the Mediterranean; British Empire globally).
-- **Animated Trade Arteries**:
-  - Animated pulsing polyline vectors connecting the active civilization to its verified historical trade partners, with directional flow markers and traded commodities (e.g., Silk, Spices, Bronze, Lapis, Amber, Timber).
-
-### B. Typographic Readability Architecture
-- **Font Scale Bump**:
-  - Micro metadata labels: upgraded from `text-[10px]` to `text-xs` (12px) with `tracking-wider`.
-  - Excerpt summaries and pillar previews: upgraded from `text-xs` (12px) to `text-sm` (14px) with `leading-relaxed`.
-  - Deep-dive narrative prose: upgraded to `text-base` (16px) with 1.75 line-height and generous paragraph spacing.
-  - Higher-contrast text colors: replace low-contrast `#78716c` with warm alabaster `#e7e5e4` and gold accents `#e5c378`.
-
-### C. 5 New Civilizations Full Corpus
-Each added civilization will be fully authored across all 12 structural characteristics, achievements, life-cycle milestones, radar metrics, and geographic data:
-1. **Classical Greece (c. 800 – 146 BCE)**: Polis autonomy, Solonian democracy, trireme naval warfare, Platonic philosophy, Parthenon Doric architecture, Panhellenic games.
-2. **Norse / Viking Age (c. 793 – 1066 CE)**: Shallow-draft clinker longships, Althing legal assemblies, silver bullion hack-silver trade, Vinland exploration.
-3. **Mongol Empire (1206 – 1368 CE)**: Steppe horse archery, Yam trans-continental postal relay, religious pluralism, Yassa legal code, Pax Mongolica.
-4. **Ottoman Empire (1299 – 1922 CE)**: Devshirme administrative corps, siege gunpowder artillery, Iznik tilework, imperial trade tariffs, multi-religious millet governance.
-5. **British Empire (c. 1600 – 1997 CE)**: Steam industrialization, joint-stock charter companies, chronometer navigation, global telegraph cables, trans-oceanic factory supply chains.
-
----
-
-## 3. System Architecture & Technical Strategy
+### Key User Flows
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│                              APP SHELL                                  │
-│   Header · Navigation Routing (Archive, Timeline, Compare, Map)        │
-└──────────────────────────────────┬─────────────────────────────────────┘
-                                   │
-       ┌───────────────────────────┼───────────────────────────┐
-       ▼                           ▼                           ▼
-┌──────────────┐         ┌─────────────────────┐      ┌──────────────────┐
-│ OPENSTREETMAP│         │  17 CIVILIZATIONS   │      │ TYPOGRAPHY SCALE │
-│  LEAFLET GIS │         │   COMPLETE CORPUS   │      │   ENHANCEMENTS   │
-│  · OSM Tiles │         │  · 12 Original      │      │  · 14px Card Body│
-│  · Territories         │  · Greece & Norse   │      │  · 16px Narrative│
-│  · Trade Corridors     │  · Mongols & Turks  │      │  · Relaxed Lines │
-│  · Rich Popups         │  · British Empire   │      │  · Contrast Bump │
-└──────────────┘         └─────────────────────┘      └──────────────────┘
-                                   │
-                                   ▼
-┌────────────────────────────────────────────────────────────────────────┐
-│                        DATA & GIS ENGINE                               │
-│  civilizationsData.ts (17 items) · museumData.ts (GIS + Trade Paths)   │
-│  radarMetrics.ts · timelineMilestones.ts                               │
+│                       LANDING OVERVIEW PAGE                            │
+├────────────────────────────────────────────────────────────────────────┤
+│  [✦ Civilization Graph (Default)]  [Timeline]  [Radar Compare] [Archive]│
+├────────────────────────────────────────────────────────────────────────┤
+│ ┌───────────────────────────────┐ ┌──────────────────────────────────┐ │
+│ │  FILTER & CHECKBOX DRAWER     │ │  OBSIDIAN KNOWLEDGE GRAPH CANVAS │ │
+│ │  ☑ Select All / Deselect All  │ │                                  │ │
+│ │  By Continent / Era:          │ │        (Sumer) ──[Math/Law]──►   │ │
+│ │  ☑ Sumer                      │ │           │                      │ │
+│ │  ☑ Ancient Egypt              │ │           ▼                      │ │
+│ │  ☑ Classical Greece           │ │      (Greece) ──[Philosophy]─►   │ │
+│ │  ☑ Han Dynasty                │ │           │            (Rome)    │ │
+│ │  ☑ Islamic Golden Age         │ │           ▼               │      │ │
+│ │  ☑ ... (17 civilizations)     │ │       (Islamic) ──────────┘      │ │
+│ │                               │ │           │                      │ │
+│ │  Edge Domain Filters:         │ │  [Zoom + / -] [Reset] [Recenter] │ │
+│ │  [All] [Sci/Math] [Trade/Law] │ │                                  │ │
+│ └───────────────────────────────┘ └──────────────────────────────────┘ │
+│                                                                        │
+│   ▼ CLICK ON ANY NODE (e.g., Classical Greece)                         │
+│ ┌────────────────────────────────────────────────────────────────────┐ │
+│ │  TLDR CIVILIZATIONAL DOSSIER POPUP (Modal / Drawer)                │ │
+│ │  • Era & Geographic Cradle                                         │ │
+│ │  • Core Tagline & Key Innovation                                   │ │
+│ │  • Full List of Achievements (Bulleted & Tagged)                   │ │
+│ │  • Transmitted Breakthroughs (What it gave & what it took)        │ │
+│ │  • Actions: [Explore Full Exhibition] [Compare in Radar]           │ │
+│ └────────────────────────────────────────────────────────────────────┘ │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Component & Data Updates
-- `src/components/MuseumWings/GeographicOriginMap.tsx`:
-  - Integrate Leaflet (`leaflet` + `leaflet/dist/leaflet.css`).
-  - Render OpenStreetMap tile layer (`L.tileLayer`).
-  - Render civilization markers with custom HTML icons (`L.divIcon`).
-  - Render territorial extent overlays (`L.polygon` / `L.geoJSON`).
-  - Render animated trade route polylines (`L.polyline`) with pulsing CSS animations.
-  - Interactive popup with civilization summary and action button.
-- `src/data/civilizationsData.ts`:
-  - Add Greece, Norse, Mongols, Ottomans, and British Empire with full 12 characteristics, achievements, collapses, and curated imagery.
-- `src/data/museumData.ts`:
-  - Add real latitude/longitude coordinates, territorial polygons, and trade route vectors for all 17 civilizations.
-- `src/data/radarMetrics.ts` & `src/data/timelineMilestones.ts`:
-  - Expand 6-axis radar scores and 3-act life-cycles for all 5 new civilizations.
-- `src/components/TimelineInteractive/MacroTimelineRuler.tsx` & `CivilizationDetail.tsx`:
-  - Apply enhanced typographic scale across all cards.
+1. **Zero-State / Load**: The page loads with the Obsidian Graph active. Nodes settle into an organic cluster layout with gentle gravitational physics.
+2. **Hover Spotlight**: Hovering over a civilization (e.g., *Islamic Golden Age*) highlights its direct ancestors (*Greece, China, India*) and descendants (*Western Europe, Modern Era*), while dimming all unrelated nodes and links.
+3. **Filtering**: Users can uncheck individual civilizations or use "Select All / Deselect All" / continent filters to isolate specific historical corridors (e.g., *Mediterranean Exchange*, *Silk Road Corridors*, or *Pre-Columbian Americas*).
+4. **Click for TLDR Popup Card**: Clicking a node opens a high-density, beautifully structured popup card containing:
+   - **Vital Stats**: Dates, duration, continent, and core capital.
+   - **Key Innovation**: The single greatest breakthrough.
+   - **Full Achievements Ledger**: All historical achievements presented in scannable, icon-tagged badges.
+   - **Evolutionary Transmissions**: Incoming parent gifts and outgoing legacies.
+   - **Direct Jump Buttons**: "Open Full Exhibition Archive" or "Compare Eras".
 
 ---
 
-## 4. Implementation Steps (Phased Execution)
+## 3. Best Practices for an Uncluttered, TLDR Experience
 
-1. **Step 1: Install & Configure Leaflet**:
-   - Install `leaflet` and `@types/leaflet`.
-   - Ensure Leaflet stylesheet and tile layers work smoothly in Vite.
-2. **Step 2: Expand Data Corpus to 17 Civilizations**:
-   - Write full structural texts, achievements, life-cycles, radar scores, and GIS coordinates for Classical Greece, Norse Vikings, Mongol Empire, Ottoman Empire, and British Empire.
-   - Define territorial boundaries and bilateral trade arteries in `museumData.ts`.
-3. **Step 3: Build OpenStreetMap GIS View (`GeographicOriginMap.tsx`)**:
-   - Implement OpenStreetMap tile layer with pan/zoom controls.
-   - Implement civilization markers with custom gold badges.
-   - Implement territorial reach polygon overlays and animated trade path polylines.
-   - Build rich interactive popups with direct archive navigation.
-4. **Step 4: Typographic Scale & Card Legibility Upgrade**:
-   - Update `MacroTimelineRuler.tsx`, `CivilizationDetail.tsx`, `MultiCompareMatrix.tsx`, and `CivilizationZoomTimeline.tsx` with larger base font sizes (`text-sm`, `text-base`), relaxed line-heights, and higher-contrast tones.
-5. **Step 5: Verification & Polish**:
-   - Validate with `lint_applet` and `compile_applet`.
-   - Test map interactivity, popup triggers, trade route animations, and responsive card readability.
+To eliminate the "confusing Wikipedia" feeling:
+1. **The 3-Second Rule (Executive Summary Badges)**: Every popup starts with a 1-sentence synopsis, epoch badge, and primary innovation.
+2. **Color-Coded Semantic Domains**: Node halos and link lines use consistent thematic colors (Blue = Science/Script, Amber = Technology, Purple = Law/Philosophy, Green = Agronomy).
+3. **Node Sizing by Influence**: Node radii scale proportionally to their connectivity (degree of transmissions), visually communicating pivotal "nexus" empires (Rome, Abbasid Caliphate, Han Dynasty, Sumer).
+4. **Dynamic Minimap & Zoom Controls**: Pan, zoom in/out, reset view, and fit-to-screen controls so the graph never gets lost off-screen.
+5. **No Text Clutter at Low Zoom**: Label font sizes adjust dynamically or fade out gracefully when zooming far out, keeping the view clean and cinematic.
+
+---
+
+## 4. Technical Architecture & Component Hierarchy
+
+```
+App.tsx
+ └── HeroLanding.tsx
+      ├── HeroLanding Action Buttons:
+      │    ├── [★ Civilization Graph] (Active by default)
+      │    ├── [Interactive Timeline]
+      │    ├── [Multi-Era Radar Compare]
+      │    └── [Exhibition Archive]
+      │
+      └── ObsidianCivGraph.tsx (Main Container)
+           ├── GraphControls.tsx (Zoom, Pan, Fit, Physics Pause)
+           ├── GraphFilterSidebar.tsx (Checkboxes, Continent Groups, Link Types)
+           ├── ForceGraphCanvas.tsx (SVG + D3-Force simulation, glowing links, nodes)
+           └── CivQuickDossierModal.tsx (TLDR Popup Card with Achievements & Evolution)
+```
+
+### Data Sources Reused:
+- `RAW_CIVILIZATIONS` from `src/data/civilizationsData.ts`: Basic metadata, full achievements lists, taglines, key innovations.
+- `TRANSMISSION_EDGES` from `src/data/evolutionData.ts`: Interaction links, breakthroughs, vectors, and historical periods.
+
+---
+
+## 5. Verification & Testing Plan
+- Verify default rendering on initial load (HeroLanding displays graph directly).
+- Verify node filtering: toggling checkboxes correctly adds/removes nodes and recalculates active links without crashing.
+- Verify simulation stability: physics ticks decay smoothly to rest ($alpha \to 0$) without endless jitter.
+- Verify click interactions: clicking any node reliably displays the TLDR modal with full achievements and evolution insights.
+- Verify responsive layout on desktop and mobile viewports.
+- Run `compile_applet` and `lint_applet` to ensure zero TypeScript errors.

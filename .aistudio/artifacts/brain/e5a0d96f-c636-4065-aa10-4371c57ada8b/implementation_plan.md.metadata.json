@@ -1,6 +1,6 @@
 {
-  "summary":  "Comprehensive architectural plan for integrating Leaflet OpenStreetMap with animated territorial extents and trade routes, adding 5 new civilizations (Classical Greece, Norse/Viking, Mongol Empire, Ottoman Empire, British Empire), and increasing typographic readability across all cards.",
-  "updatedAt":  "2026-10-29T06:00:41.897246974Z",
+  "summary":  "Architectural plan for the Obsidian-style Civilization Interaction Graph to serve as the default TLDR overview of the application. Includes force-directed node-link physics, civilization toggles, transmission vectors, achievements digest, and interactive modal dossiers.",
+  "updatedAt":  "2026-10-30T05:14:28.584653624Z",
   "requestFeedback":  true,
   "userFacing":  true
 }

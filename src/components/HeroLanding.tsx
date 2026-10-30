@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Compass,
   ArrowRight,
@@ -12,23 +12,28 @@ import {
   Calendar,
   Globe,
   Landmark,
-  GitBranch
+  GitBranch,
+  Network
 } from 'lucide-react';
 import { Civilization, ViewMode } from '../types/civilization';
 import { soundManager } from '../utils/audioAmbience';
+import { ObsidianCivGraph } from './ObsidianCivGraph';
 
 interface HeroLandingProps {
   civilizations: Civilization[];
   onSelectCivilization: (id: string) => void;
   onNavigateView: (view: ViewMode) => void;
+  onOpenCompare?: (civAId: string, civBId: string) => void;
 }
 
 export const HeroLanding: React.FC<HeroLandingProps> = ({
   civilizations,
   onSelectCivilization,
   onNavigateView,
+  onOpenCompare,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const graphSectionRef = useRef<HTMLDivElement | null>(null);
 
   // Subtle ambient particle starfield canvas
   useEffect(() => {
@@ -99,9 +104,9 @@ export const HeroLanding: React.FC<HeroLandingProps> = ({
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] bg-[#c5a059]/5 blur-[120px] rounded-full pointer-events-none" />
 
       {/* Hero Marquee Section */}
-      <div className="relative z-10 max-w-5xl mx-auto px-6 pt-14 pb-8 text-center flex flex-col items-center">
+      <div className="relative z-10 max-w-5xl mx-auto px-6 pt-12 pb-6 text-center flex flex-col items-center">
         {/* Curatorial Header Kicker */}
-        <div className="flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-[#c5a059] font-medium mb-6">
+        <div className="flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-[#c5a059] font-medium mb-5">
           <span>Digital Curatorial Archive</span>
           <span aria-hidden="true" className="text-stone-600">·</span>
           <span>Comparative World Systems</span>
@@ -110,30 +115,47 @@ export const HeroLanding: React.FC<HeroLandingProps> = ({
         </div>
 
         {/* Monumental Title */}
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-[#f8f5ee] tracking-tight leading-[1.1] mb-6 max-w-4xl text-balance">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-[#f8f5ee] tracking-tight leading-[1.1] mb-5 max-w-4xl text-balance">
           The Evolutionary Web of Civilization
         </h1>
 
         {/* Curatorial Subdeck */}
-        <p className="text-base sm:text-lg md:text-xl text-stone-300 max-w-2xl font-light leading-relaxed mb-8 text-balance">
+        <p className="text-base sm:text-lg md:text-xl text-stone-300 max-w-3xl font-light leading-relaxed mb-8 text-balance">
           An interactive digital museum examining human organization across twelve structural pillars—from the canal-irrigated silt of early Sumer to the planetary compute matrices of the modern digital epoch.
         </p>
 
-        {/* Interactive Primary Actions */}
-        <div className="flex flex-wrap items-center justify-center gap-3.5 mb-10">
+        {/* Interactive Primary Actions with Civilization Graph IN FRONT (Default view) */}
+        <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
+          {/* Button 1: Civilization Graph (Active Default!) */}
+          <button
+            type="button"
+            onClick={() => {
+              soundManager.playChime();
+              graphSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="group px-6 py-3.5 bg-[#c5a059] hover:bg-[#d8b56f] text-black font-semibold text-xs sm:text-sm uppercase tracking-wider rounded-md transition-all flex items-center gap-2.5 shadow-[0_0_35px_rgba(197,160,89,0.35)] hover:shadow-[0_0_45px_rgba(197,160,89,0.5)] cursor-pointer border border-[#c5a059]"
+          >
+            <Sparkles className="w-4 h-4 text-black group-hover:scale-110 transition-transform" />
+            <span>Civilization Graph</span>
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/20 text-black uppercase font-bold">
+              Default
+            </span>
+          </button>
+
+          {/* Button 2: Interactive Timeline */}
           <button
             type="button"
             onClick={() => {
               soundManager.playChime();
               onNavigateView('timeline');
             }}
-            className="group px-6 py-3.5 bg-[#c5a059] hover:bg-[#d8b56f] text-black font-semibold text-xs sm:text-sm uppercase tracking-wider rounded-md transition-all flex items-center gap-2.5 shadow-[0_0_30px_rgba(197,160,89,0.25)] hover:shadow-[0_0_40px_rgba(197,160,89,0.4)] cursor-pointer"
+            className="px-5 py-3.5 bg-[#171a26] hover:bg-[#202436] text-stone-200 hover:text-white font-medium text-xs sm:text-sm rounded-md transition-all border border-[#2d3248] hover:border-[#c5a059]/50 flex items-center gap-2 cursor-pointer"
           >
-            <Calendar className="w-4 h-4" />
+            <Calendar className="w-4 h-4 text-[#c5a059]" />
             <span>Interactive Timeline</span>
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </button>
 
+          {/* Button 3: Multi-Era Radar Compare */}
           <button
             type="button"
             onClick={() => {
@@ -146,13 +168,14 @@ export const HeroLanding: React.FC<HeroLandingProps> = ({
             <span>Multi-Era Radar Compare</span>
           </button>
 
+          {/* Button 4: Exhibition Archive */}
           <button
             type="button"
             onClick={() => {
               soundManager.playChime();
               onNavigateView('archive');
             }}
-            className="px-5 py-3.5 bg-[#171a26]/60 hover:bg-[#202436] text-stone-300 font-medium text-xs sm:text-sm rounded-md transition-all border border-[#2d3248] flex items-center gap-2 cursor-pointer"
+            className="px-5 py-3.5 bg-[#171a26]/60 hover:bg-[#202436] text-stone-300 hover:text-white font-medium text-xs sm:text-sm rounded-md transition-all border border-[#2d3248] flex items-center gap-2 cursor-pointer"
           >
             <Compass className="w-4 h-4 text-stone-400" />
             <span>Exhibition Archive</span>
@@ -160,7 +183,7 @@ export const HeroLanding: React.FC<HeroLandingProps> = ({
         </div>
 
         {/* Secondary Wings Shortcuts Ribbon */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-8 text-xs">
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-6 text-xs">
           <button
             type="button"
             onClick={() => {
@@ -197,12 +220,33 @@ export const HeroLanding: React.FC<HeroLandingProps> = ({
             <span>Relics Gallery</span>
           </button>
         </div>
+      </div>
 
-        {/* Statistical Anchors */}
-        <div className="w-full max-w-3xl pt-6 border-t border-[#232738] grid grid-cols-1 sm:grid-cols-3 gap-6 text-stone-400 text-xs">
+      {/* Primary Centerpiece: Civilization Knowledge Graph (Default Load) */}
+      <div ref={graphSectionRef} className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 mb-12">
+        <ObsidianCivGraph
+          civilizations={civilizations}
+          onSelectCivilization={onSelectCivilization}
+          onNavigateToArchive={(id) => {
+            onSelectCivilization(id);
+            onNavigateView('archive');
+          }}
+          onOpenCompare={(a, b) => {
+            if (onOpenCompare) {
+              onOpenCompare(a, b);
+            } else {
+              onNavigateView('compare');
+            }
+          }}
+        />
+      </div>
+
+      {/* Statistical Anchors */}
+      <div className="relative z-10 w-full max-w-4xl mx-auto px-6 mb-12">
+        <div className="w-full pt-6 border-t border-[#232738] grid grid-cols-1 sm:grid-cols-3 gap-6 text-stone-400 text-xs">
           <div className="flex flex-col items-center">
             <span className="text-2xl font-serif text-[#f8f5ee] font-semibold tabular-nums mb-1">
-              12
+              {civilizations.length}
             </span>
             <span className="uppercase tracking-wider text-[11px] text-stone-400">
               World Civilizations

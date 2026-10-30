@@ -45,6 +45,20 @@ export interface Civilization {
   curatorialQuote: string;
   tagline: string;
   keyInnovation: string;
+  gallery?: ArchivalGalleryItem[];
+}
+
+export type ImageCategory = 'Architecture' | 'Artifact' | 'Artwork' | 'Metropolis' | 'Technology';
+
+export interface ArchivalGalleryItem {
+  id: string;
+  title: string;
+  category: ImageCategory;
+  period: string;
+  primarySrc: string;
+  fallbackSrc: string;
+  caption: string;
+  credit: string;
 }
 
 export interface CharacteristicMeta {
@@ -143,6 +157,7 @@ export type ViewMode =
   | 'landing'
   | 'archive'
   | 'timeline'
+  | 'evolution'
   | 'compare'
   | 'macro_matrix'
   | 'map'
